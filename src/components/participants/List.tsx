@@ -10,8 +10,8 @@ interface ParticipantListProps {
 }
 
 const List: React.FC<ParticipantListProps> = ({ participants }) => {
-  if (participants.length === 0) {
-    return <p>There are no users participating in this thread</p>;
+  if (!participants.length) {
+    return <p>This thread has no users</p>;
   }
 
   return (

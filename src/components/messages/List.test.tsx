@@ -42,3 +42,10 @@ test('Message List', () => {
     expect(text).toBeInTheDocument();
   });
 });
+
+test('Message List - empty state', () => {
+  const result = render(<MessageList messages={[]} />);
+  const emptyStateEl = result.getByText('This thread has no messages');
+
+  expect(emptyStateEl).toBeInTheDocument();
+});

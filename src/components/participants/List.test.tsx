@@ -25,3 +25,10 @@ test('Participants List', () => {
     expect(userEl).toBeInTheDocument();
   });
 });
+
+test('Participant List - empty state', () => {
+  const result = render(<ParticipantList participants={[]} />);
+  const emptyStateEl = result.getByText('This thread has no users');
+
+  expect(emptyStateEl).toBeInTheDocument();
+});
