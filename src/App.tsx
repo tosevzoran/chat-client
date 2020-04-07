@@ -51,12 +51,13 @@ const Container = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: hidden;
 `;
 
 const Content = styled.div`
   background-color: #fff;
   flex: 1;
+  overflow-y: hidden;
+  height: 100%;
 `;
 
 const TabHeader = styled(TabPanel.TabHeader)<{ isActive?: boolean }>`

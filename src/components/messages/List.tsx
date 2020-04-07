@@ -1,5 +1,21 @@
 import React from 'react';
 import Message, { MessageProps } from './Message';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 100%;
+  padding: 1.5rem;
+`;
+
+const StyledMessage = styled(Message)`
+  & + & {
+    margin-top: 1.5rem;
+  }
+`;
 
 const List: React.FC<{ messages: MessageProps[] }> = ({ messages }) => {
   if (!messages.length) {
@@ -7,11 +23,11 @@ const List: React.FC<{ messages: MessageProps[] }> = ({ messages }) => {
   }
 
   return (
-    <div>
+    <Container>
       {messages.map((message) => (
-        <Message key={message.id} {...message} />
+        <StyledMessage key={message.id} {...message} />
       ))}
-    </div>
+    </Container>
   );
 };
 
