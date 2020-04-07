@@ -12,6 +12,7 @@ type TabPanelType<P = TabPanelProps> = React.FC<P> & {
 };
 interface TabProps {
   tabId: TabIdType;
+  className?: string;
 }
 interface TabPanelProps {
   defaultTabId?: TabIdType;
@@ -40,14 +41,30 @@ const Button = styled.button`
   line-height: normal;
 `;
 
-const TabHeader: React.FC<TabProps> = ({ tabId, children }) => (
-  <Consumer>
-    {({ changeTab }) => (
-      <Button type="button" onClick={() => changeTab(tabId)}>
-        {children}
-      </Button>
-    )}
-  </Consumer>
+const TabHeaderWrapper = styled.span``;
+
+const TabHeader: React.FC<TabProps> = ({ tabId, children, className }) => (
+  <TabHeaderWrapper>
+    <Consumer>
+      {({ changeTab, activeTabId }) => {
+        let classes = className;
+
+        if (activeTabId === tabId) {
+          classes += ' active';
+        }
+
+        return (
+          <Button
+            type="button"
+            className={classes}
+            onClick={() => changeTab(tabId)}
+          >
+            {children}
+          </Button>
+        );
+      }}
+    </Consumer>
+  </TabHeaderWrapper>
 );
 
 const TabContent: React.FC<TabProps> = ({ tabId, children }) => (
