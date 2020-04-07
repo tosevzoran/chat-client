@@ -48,11 +48,15 @@ const users = [
 
 const Container = styled.div`
   max-width: 50rem;
-  margin: 2rem auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
 `;
 
 const Content = styled.div`
   background-color: #fff;
+  flex: 1;
 `;
 
 const TabHeader = styled(TabPanel.TabHeader)<{ isActive?: boolean }>`
@@ -75,8 +79,10 @@ function App() {
   return (
     <Container>
       <TabPanel defaultTabId="messages">
-        <TabHeader tabId="participants">Participants</TabHeader>
-        <TabHeader tabId="messages">Messages</TabHeader>
+        <div>
+          <TabHeader tabId="participants">Participants</TabHeader>
+          <TabHeader tabId="messages">Messages</TabHeader>
+        </div>
         <Content>
           <TabPanel.TabContent tabId="participants">
             <ParticipantsList participants={users} />
