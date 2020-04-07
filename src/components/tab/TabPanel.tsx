@@ -1,0 +1,55 @@
+import React, { createContext, useState } from 'react';
+
+type TabIdType = number | string | undefined;
+type TabContextProps = {
+  changeTab: (tabId: TabIdType) => void;
+  activeTabId: TabIdType;
+};
+type TabPanelType<P = TabPanelProps> = React.FC<P> & {
+  TabContent: React.FC<TabProps>;
+  TabHeader: React.FC<TabProps>;
+};
+interface TabProps {
+  tabId: TabIdType;
+}
+interface TabPanelProps {
+  defaultTabId?: TabIdType;
+}
+
+const context = createContext<TabContextProps>({
+  changeTab: (tabId: TabIdType) => {},
+  activeTabId: undefined,
+});
+
+const { Provider, Consumer } = context;
+
+const TabHeader: React.FC<TabProps> = ({ tabId, children }) => (
+  <Consumer>
+    {({ changeTab }) => (
+      <button type="button" onClick={() => changeTab(tabId)}>
+        {children}
+      </button>
+    )}
+  </Consumer>
+);
+
+const TabContent: React.FC<TabProps> = ({ tabId, children }) => (
+  <Consumer>
+    {({ activeTabId }) => (activeTabId === tabId ? children : null)}
+  </Consumer>
+);
+
+const TabPanel: TabPanelType = ({ children, defaultTabId }) => {
+  const [activeTabId, setActiveTabId] = useState<TabIdType>(defaultTabId);
+
+  const changeTab = (tabId: TabIdType) => {
+    setActiveTabId(tabId);
+  };
+
+  return <Provider value={{ activeTabId, changeTab }}>{children}</Provider>;
+};
+
+TabPanel.TabHeader = TabHeader;
+TabPanel.TabContent = TabContent;
+
+export default TabPanel;
