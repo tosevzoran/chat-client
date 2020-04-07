@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { KeyboardEvent, useState } from 'react';
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import Message, { MessageProps } from './Message';
 import styled from 'styled-components';
 
+const KEY_ENTER = 13;
+
 const Container = styled.div`
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+`;
+
+const Messages = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  height: 100%;
-  padding: 1.5rem;
+  flex: 1;
 `;
 
 const StyledMessage = styled(Message)`
@@ -17,16 +25,48 @@ const StyledMessage = styled(Message)`
   }
 `;
 
+const MessageInput = styled(ContentEditable)`
+  border-radius: 0.125rem;
+  border: 0.0625rem solid #cccccc;
+  padding: 0.25rem;
+  margin-top: 1rem;
+  min-height: 1rem;
+  max-height: 10rem;
+  overflow-y: auto;
+  width: 100%;
+`;
+
 const List: React.FC<{ messages: MessageProps[] }> = ({ messages }) => {
-  if (!messages.length) {
-    return <p>This thread has no messages</p>;
-  }
+  const [message, setMessage] = useState('');
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.keyCode === KEY_ENTER && !e.shiftKey) {
+      e.preventDefault();
+      e.stopPropagation();
+      // TODO: send the actual message
+      setMessage('');
+
+      return false;
+    }
+  };
+
+  const handleChange = (e: ContentEditableEvent) => {
+    setMessage(e.target.value);
+  };
 
   return (
     <Container>
-      {messages.map((message) => (
-        <StyledMessage key={message.id} {...message} />
-      ))}
+      <Messages>
+        {!messages.length && <p>This thread has no messages</p>}
+        {messages.map((message) => (
+          <StyledMessage key={message.id} {...message} />
+        ))}
+      </Messages>
+      <MessageInput
+        html={message}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+      />
     </Container>
   );
 };
