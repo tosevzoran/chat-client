@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import styled from 'styled-components';
 
 type TabIdType = number | string | undefined;
 type TabContextProps = {
@@ -23,12 +24,28 @@ const context = createContext<TabContextProps>({
 
 const { Provider, Consumer } = context;
 
+const Button = styled.button`
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+
+  background: transparent;
+
+  /* inherit font & color from ancestor */
+  color: inherit;
+  font: inherit;
+
+  line-height: normal;
+`;
+
 const TabHeader: React.FC<TabProps> = ({ tabId, children }) => (
   <Consumer>
     {({ changeTab }) => (
-      <button type="button" onClick={() => changeTab(tabId)}>
+      <Button type="button" onClick={() => changeTab(tabId)}>
         {children}
-      </button>
+      </Button>
     )}
   </Consumer>
 );
