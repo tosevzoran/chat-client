@@ -2,7 +2,7 @@ import React from 'react';
 import TabPanel from 'components/tab/TabPanel';
 import MessageList from 'components/messages/List';
 import ParticipantsList from 'components/participants/List';
-import './App.css';
+import styled from 'styled-components';
 
 const messages = [
   {
@@ -46,24 +46,47 @@ const users = [
   },
 ];
 
+const Container = styled.div`
+  max-width: 50rem;
+  margin: 2rem auto;
+`;
+
+const Content = styled.div`
+  background-color: #fff;
+`;
+
+const TabHeader = styled(TabPanel.TabHeader)<{ isActive?: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0 2rem;
+
+  outline: none;
+
+  &.active {
+    background-color: #ffffff;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 function App() {
   return (
-    <div className="App">
+    <Container>
       <TabPanel defaultTabId="messages">
-        <TabPanel.TabHeader tabId="participants">
-          Participants
-        </TabPanel.TabHeader>
-        <TabPanel.TabHeader tabId="messages">Messages</TabPanel.TabHeader>
-        <div>
+        <TabHeader tabId="participants">Participants</TabHeader>
+        <TabHeader tabId="messages">Messages</TabHeader>
+        <Content>
           <TabPanel.TabContent tabId="participants">
             <ParticipantsList participants={users} />
           </TabPanel.TabContent>
           <TabPanel.TabContent tabId="messages">
             <MessageList messages={messages} />
           </TabPanel.TabContent>
-        </div>
+        </Content>
       </TabPanel>
-    </div>
+    </Container>
   );
 }
 
