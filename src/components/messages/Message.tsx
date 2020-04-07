@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import format from 'date-fns/format';
+import { timestampToString } from 'helper/format';
 
 interface HeaderProps {
   username: string;
@@ -31,9 +31,6 @@ const HeaderContainer = styled.div`
   margin-bottom: 0.25rem;
   display: flex;
 `;
-
-const timestampToString = (timestamp: number) =>
-  format(new Date(timestamp), 'H:mm');
 
 const Header: React.FC<HeaderProps> = ({ username, timestamp }) => (
   <HeaderContainer>

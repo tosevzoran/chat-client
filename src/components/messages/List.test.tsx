@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import MessageList from './List';
+import { timestampToString } from 'helper/format';
 
 const messages = [
   {
@@ -35,7 +36,7 @@ test('Message List', () => {
   messages.forEach((message) => {
     const username = result.getByText(message.username);
     const text = result.getByText(message.text);
-    const timestamp = result.getByText(String(message.timestamp));
+    const timestamp = result.getByText(timestampToString(message.timestamp));
 
     expect(username).toBeInTheDocument();
     expect(timestamp).toBeInTheDocument();
