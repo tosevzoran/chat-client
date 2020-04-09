@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent, useState, useRef, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { messagesSelector } from 'store/messagesReducer';
 import Message from './Message';
@@ -39,8 +39,15 @@ const MessageInput = styled.textarea`
 
 const List: React.FC = () => {
   const [message, setMessage] = useState('');
+  const anchorRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const messages = useSelector(messagesSelector);
+
+  useLayoutEffect(() => {
+    if (anchorRef && anchorRef.current) {
+      anchorRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.keyCode === KEY_ENTER && !e.shiftKey) {
@@ -72,6 +79,7 @@ const List: React.FC = () => {
         {messages.map((message) => (
           <StyledMessage key={message.id} {...message} />
         ))}
+        <div ref={anchorRef}></div>
       </Messages>
       <MessageInput
         value={message}
