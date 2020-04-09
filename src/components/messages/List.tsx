@@ -1,4 +1,5 @@
 import React, { KeyboardEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Message, { MessageProps } from './Message';
 import styled from 'styled-components';
 
@@ -37,12 +38,21 @@ const MessageInput = styled.textarea`
 
 const List: React.FC<{ messages: MessageProps[] }> = ({ messages }) => {
   const [message, setMessage] = useState('');
+  const dispatch = useDispatch();
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.keyCode === KEY_ENTER && !e.shiftKey) {
       e.preventDefault();
       e.stopPropagation();
-      // TODO: send the actual message
+
+      dispatch({
+        type: 'MESSAGE_SEND',
+        payload: {
+          text: message,
+          action: 'new',
+        },
+      });
+
       setMessage('');
 
       return false;
