@@ -1,5 +1,4 @@
 import React, { KeyboardEvent, useState } from 'react';
-import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import Message, { MessageProps } from './Message';
 import styled from 'styled-components';
 
@@ -25,7 +24,7 @@ const StyledMessage = styled(Message)`
   }
 `;
 
-const MessageInput = styled(ContentEditable)`
+const MessageInput = styled.textarea`
   border-radius: 0.125rem;
   border: 0.0625rem solid #cccccc;
   padding: 0.25rem;
@@ -50,7 +49,7 @@ const List: React.FC<{ messages: MessageProps[] }> = ({ messages }) => {
     }
   };
 
-  const handleChange = (e: ContentEditableEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
   };
 
@@ -63,7 +62,7 @@ const List: React.FC<{ messages: MessageProps[] }> = ({ messages }) => {
         ))}
       </Messages>
       <MessageInput
-        html={message}
+        value={message}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
       />
