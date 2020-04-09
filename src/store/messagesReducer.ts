@@ -1,16 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-
-export type Message = {
-  id: string;
-  text: string;
-  action: string;
-  username: string;
-  timestamp: number;
-};
-
-export type MessagesState = {
-  entities: { [key: string]: Message };
-};
+import { AppState, Message, EntityState, WsAction } from './types';
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -23,12 +12,27 @@ const messagesSlice = createSlice({
     removeMessage: (state, action) => {},
   },
   extraReducers: {
-    WS_MESSAGE_RECEIVE: (state, { payload }) => ({
-      entities: {
-        ...state.entities,
-        ...payload.entities.messages,
-      },
-    }),
+    WS_MESSAGE_RECEIVE: (
+      state: EntityState<Message>,
+      { payload }: WsAction
+    ) => {
+      const messages = Object.entries(payload.entities.messages)
+        .map(([key, message]): [string, Message] => {
+          if (message.action === 'greeting') {
+            return [key, { ...message, text: `Welcome ${message.username}` }];
+          }
+
+          return [key, message];
+        })
+        .reduce((acc, [key, message]) => ({ ...acc, [key]: message }), {});
+
+      return {
+        entities: {
+          ...state.entities,
+          ...messages,
+        },
+      };
+    },
   },
 });
 
@@ -37,7 +41,7 @@ const { actions, reducer } = messagesSlice;
 export const { addMessage, editMessage, removeMessage } = actions;
 
 export const messagesSelector = createSelector(
-  (state: { messages: MessagesState }) => state.messages.entities,
+  (state: AppState) => state.messages.entities,
   (messages) =>
     Object.values(messages || {}).sort((a, b) => a.timestamp - b.timestamp)
 );
