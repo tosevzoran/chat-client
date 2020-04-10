@@ -6,7 +6,7 @@ const messageEntity = new schema.Entity('messages', {
   user: userEntity,
 });
 const greetingEntity = new schema.Entity('greetings', {
-  loggedUser: userEntity,
+  // loggedUser: userEntity,
   connectedUsers: [userEntity],
   messageHistory: [messageEntity],
 });
@@ -20,12 +20,20 @@ const socketMiddleware: Middleware = (store) => {
   socket.onmessage = (message) => {
     const messageData = JSON.parse(message.data);
 
-    const normalizedEntity =
-      messageData.type === 'greeting' ? greetingEntity : messageEntity;
+    let normalizationEntity = messageEntity;
+
+    if (messageData.type === 'greeting') {
+      normalizationEntity = greetingEntity;
+
+      store.dispatch({
+        type: 'WS_LOGGIN',
+        payload: messageData.loggedUser,
+      });
+    }
 
     store.dispatch({
       type: 'WS_MESSAGE_RECEIVE',
-      payload: normalize(messageData, normalizedEntity),
+      payload: normalize(messageData, normalizationEntity),
     });
   };
 
