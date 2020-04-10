@@ -1,7 +1,7 @@
 export type Message = {
   id: string;
   text: string;
-  action: string;
+  type: string;
   username: string;
   timestamp: number;
 };
@@ -18,6 +18,7 @@ export type EntityState<Entity> = {
 export type WsPayload = {
   entities: {
     messages: { [key: string]: Message };
+    users: { [key: string]: User };
   };
 };
 

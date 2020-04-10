@@ -59,6 +59,7 @@ const List: React.FC = () => {
         payload: {
           text: message,
           action: 'new',
+          type: 'message',
         },
       });
 

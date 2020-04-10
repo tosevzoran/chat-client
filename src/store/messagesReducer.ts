@@ -15,24 +15,12 @@ const messagesSlice = createSlice({
     WS_MESSAGE_RECEIVE: (
       state: EntityState<Message>,
       { payload }: WsAction
-    ) => {
-      const messages = Object.entries(payload.entities.messages)
-        .map(([key, message]): [string, Message] => {
-          if (message.action === 'greeting') {
-            return [key, { ...message, text: `Welcome ${message.username}` }];
-          }
-
-          return [key, message];
-        })
-        .reduce((acc, [key, message]) => ({ ...acc, [key]: message }), {});
-
-      return {
-        entities: {
-          ...state.entities,
-          ...messages,
-        },
-      };
-    },
+    ) => ({
+      entities: {
+        ...state.entities,
+        ...payload.entities.messages,
+      },
+    }),
   },
 });
 

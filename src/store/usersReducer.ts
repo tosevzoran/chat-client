@@ -1,11 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, SliceCaseReducers } from '@reduxjs/toolkit';
+import { User, EntityState, WsAction } from './types';
 
-const messagesSlice = createSlice({
+type UserState = EntityState<User> & {
+  loggedUser: User | null;
+};
+
+const messagesSlice = createSlice<UserState, SliceCaseReducers<UserState>>({
   name: 'users',
-  initialState: {},
+  initialState: {
+    entities: {},
+    loggedUser: null,
+  },
   reducers: {
     addUser: (state, action) => {},
     removeUser: (state, action) => {},
+  },
+  extraReducers: {
+    WS_MESSAGE_RECEIVE: (state: UserState, { payload }: WsAction) => ({
+      ...state,
+      entities: {
+        ...state.entities,
+        ...payload.entities.users,
+      },
+    }),
   },
 });
 
