@@ -1,5 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { usersSelector } from 'store/entitiesReducer';
 
 interface User {
   id: number | string;
@@ -23,7 +25,9 @@ const StyledListItem = styled.li`
   border-bottom: 0.0625rem solid #cccccc;
 `;
 
-const List: React.FC<ParticipantListProps> = ({ participants }) => {
+const List: React.FC = () => {
+  const participants = useSelector(usersSelector);
+
   if (!participants.length) {
     return <p>This thread has no users</p>;
   }

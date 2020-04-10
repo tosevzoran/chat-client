@@ -4,21 +4,6 @@ import MessageList from 'components/messages/List';
 import ParticipantsList from 'components/participants/List';
 import styled from 'styled-components';
 
-const users = [
-  {
-    id: 1,
-    username: 'Lorem Ipsum',
-  },
-  {
-    id: 2,
-    username: 'Richard McClintock',
-  },
-  {
-    id: 3,
-    username: 'Finibus Bonorum',
-  },
-];
-
 const Container = styled.div`
   max-width: 50rem;
   flex: 1;
@@ -59,7 +44,7 @@ function App() {
         </div>
         <Content>
           <TabPanel.TabContent tabId="participants">
-            <ParticipantsList participants={users} />
+            <ParticipantsList />
           </TabPanel.TabContent>
           <TabPanel.TabContent tabId="messages">
             <MessageList />

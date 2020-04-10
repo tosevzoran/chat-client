@@ -40,4 +40,9 @@ export const messagesSelector = createSelector(
       .sort((a, b) => a.timestamp - b.timestamp)
 );
 
+export const usersSelector = createSelector(
+  (state: AppState) => state.entities.users,
+  (users) => Object.values(users || {})
+);
+
 export default entityReducer;
