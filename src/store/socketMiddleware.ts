@@ -1,15 +1,7 @@
 import { Middleware } from 'redux';
-import { normalize, schema } from 'normalizr';
+import { normalize } from 'normalizr';
 
-const userEntity = new schema.Entity('users');
-const messageEntity = new schema.Entity('messages', {
-  user: userEntity,
-});
-const greetingEntity = new schema.Entity('greetings', {
-  // loggedUser: userEntity,
-  connectedUsers: [userEntity],
-  messageHistory: [messageEntity],
-});
+import { messageEntity, greetingEntity } from './entitiesReducer';
 
 const wsUrl = process.env.REACT_APP_CHAT_URL;
 const wsPort = process.env.REACT_APP_CHAT_PORT;

@@ -11,23 +11,12 @@ export type User = {
   username: string;
 };
 
-export type EntityState<Entity> = {
-  entities: { [key: string]: Entity };
-};
-
-export type WsPayload = {
-  entities: {
-    messages: { [key: string]: Message };
-    users: { [key: string]: User };
-  };
-};
-
-export type WsAction = {
-  action: string;
-  payload: WsPayload;
-};
-
 export type AppState = {
-  users: EntityState<User>;
-  messages: EntityState<Message>;
+  entities: {
+    users: { [key: string]: User };
+    messages: { [key: string]: Message };
+  };
+  users: {
+    loggedUser: User;
+  };
 };

@@ -1,7 +1,7 @@
 import { createSlice, SliceCaseReducers } from '@reduxjs/toolkit';
-import { User, EntityState, WsAction } from './types';
+import { User } from './types';
 
-type UserState = EntityState<User> & {
+type UserState = {
   loggedUser: User | null;
 };
 
@@ -13,7 +13,6 @@ type LoginPayload = {
 const messagesSlice = createSlice<UserState, SliceCaseReducers<UserState>>({
   name: 'users',
   initialState: {
-    entities: {},
     loggedUser: null,
   },
   reducers: {
@@ -24,13 +23,6 @@ const messagesSlice = createSlice<UserState, SliceCaseReducers<UserState>>({
     WS_LOGGIN: (state: UserState, { payload }: LoginPayload) => ({
       ...state,
       loggedUser: payload,
-    }),
-    WS_MESSAGE_RECEIVE: (state: UserState, { payload }: WsAction) => ({
-      ...state,
-      entities: {
-        ...state.entities,
-        ...payload.entities.users,
-      },
     }),
   },
 });

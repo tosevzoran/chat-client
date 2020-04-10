@@ -1,6 +1,6 @@
 import React, { KeyboardEvent, useState, useRef, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { messagesSelector } from 'store/messagesReducer';
+import { messagesSelector } from 'store/entitiesReducer';
 import Message from './Message';
 import styled from 'styled-components';
 
