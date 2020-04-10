@@ -2,6 +2,7 @@ import React, { KeyboardEvent, useState, useRef, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { messagesSelector } from 'store/entitiesReducer';
 import Message from './Message';
+import { Message as MessageType } from 'store/types';
 import styled from 'styled-components';
 
 const KEY_ENTER = 13;
@@ -77,8 +78,8 @@ const List: React.FC = () => {
     <Container>
       <Messages>
         {!messages.length && <p>This thread has no messages</p>}
-        {messages.map((message) => (
-          <StyledMessage key={message.id} {...message} />
+        {messages.map((message: MessageType) => (
+          <StyledMessage key={message.id} message={message} />
         ))}
         <div ref={anchorRef}></div>
       </Messages>

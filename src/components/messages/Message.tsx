@@ -1,19 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { timestampToString } from 'helper/format';
+import { Message as MessageType } from 'store/types';
 
-interface HeaderProps {
-  username: string;
-  timestamp: number;
-}
-
-interface BodyProps {
-  text: string;
-}
-
-export interface MessageProps extends HeaderProps, BodyProps {
-  id: string | number;
+export interface MessageProps {
+  message: MessageType;
   className?: string;
+  onContextMenu?: (e: React.MouseEvent) => void;
 }
 
 const Time = styled.span`
@@ -32,23 +25,24 @@ const HeaderContainer = styled.div`
   display: flex;
 `;
 
-const Header: React.FC<HeaderProps> = ({ username, timestamp }) => (
+const Header: React.FC<Partial<MessageType>> = ({ username, timestamp }) => (
   <HeaderContainer>
     <User>{username}</User>
     <Time>{timestampToString(timestamp)}</Time>
   </HeaderContainer>
 );
 
-const Body: React.FC<BodyProps> = ({ text }) => <div>{text}</div>;
+const Body: React.FC<Partial<MessageType>> = ({ text }) => <div>{text}</div>;
 
 const Message: React.FC<MessageProps> = ({
-  username,
-  timestamp,
-  text,
+  message,
   className,
+  onContextMenu,
 }) => {
+  const { username, timestamp, text } = message;
+
   return (
-    <div className={className}>
+    <div className={className} onContextMenu={onContextMenu}>
       <Header username={username} timestamp={timestamp} />
       <Body text={text} />
     </div>
