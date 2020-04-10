@@ -42,7 +42,7 @@ export const messagesSelector = createSelector(
 
 export const usersSelector = createSelector(
   (state: AppState) => state.entities.users,
-  (users) => Object.values(users || {})
+  (users) => Object.values(users || {}).filter((user) => !user.isDeleted)
 );
 
 export default entityReducer;

@@ -9,6 +9,7 @@ export type Message = {
 export type User = {
   id: string;
   username: string;
+  isDeleted: string;
 };
 
 export type AppState = {
