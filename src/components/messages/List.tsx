@@ -36,6 +36,7 @@ const Messages = styled.div`
 
 const MessageRow = styled.div`
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
   & + & {
     margin-top: 1.5rem;
@@ -55,7 +56,6 @@ const MessageInput = styled.textarea`
 
 const Actions = styled.div`
   display: flex;
-  flex-direction: column;
 `;
 
 const ActionButton = styled.button`
@@ -74,9 +74,15 @@ const List: React.FC = () => {
   const dispatch = useDispatch();
   const messages = useSelector(messagesSelector);
   const loggedUser = useSelector(loggedUserSelector);
+  const isMyMessage =
+    !message.isDeleted && loggedUser && message.user.id === loggedUser.id;
 
   useLayoutEffect(() => {
-    if (anchorRef && anchorRef.current) {
+    if (
+      anchorRef &&
+      anchorRef.current &&
+      typeof anchorRef.current.scrollIntoView === 'function'
+    ) {
       anchorRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
@@ -123,7 +129,7 @@ const List: React.FC = () => {
         {messages.map((message: MessageType) => (
           <MessageRow key={message.id}>
             <Message message={message} />
-            {!message.isDeleted && message.user.id === loggedUser.id && (
+            {isMyMessage && (
               <Actions>
                 <ActionButton
                   type="button"

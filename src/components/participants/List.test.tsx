@@ -1,33 +1,29 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { configureStore } from '@reduxjs/toolkit';
+import { normalize } from 'normalizr';
+import { render } from 'test/test-utils';
+import { messages } from 'test/data';
 import ParticipantList from './List';
-
-const users = [
-  {
-    id: 1,
-    username: 'Lorem Ipsum',
-  },
-  {
-    id: 2,
-    username: 'Richard McClintock',
-  },
-  {
-    id: 3,
-    username: 'Finibus Bonorum',
-  },
-];
+import storeConfig from 'store';
+import { messageEntity } from 'store/entitiesReducer';
 
 test('Participants List', () => {
-  const result = render(<ParticipantList participants={users} />);
+  const store = configureStore(storeConfig);
+  const result = render(<ParticipantList />, { store });
 
-  users.forEach(({ username }) => {
+  store.dispatch({
+    type: 'WS_MESSAGE_RECEIVE',
+    payload: normalize(messages, [messageEntity]),
+  });
+
+  messages.forEach(({ username }) => {
     const userEl = result.getByText(username);
     expect(userEl).toBeInTheDocument();
   });
 });
 
 test('Participant List - empty state', () => {
-  const result = render(<ParticipantList participants={[]} />);
+  const result = render(<ParticipantList />);
   const emptyStateEl = result.getByText('This thread has no users');
 
   expect(emptyStateEl).toBeInTheDocument();
