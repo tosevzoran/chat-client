@@ -2,9 +2,9 @@ export type Message = {
   id: string;
   text: string;
   type: string;
-  username: string;
   timestamp: number;
-  user: User;
+  sender: User;
+  data?: { [key: string]: any };
   isEdited: boolean;
   isDeleted: boolean;
 };

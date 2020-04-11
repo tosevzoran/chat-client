@@ -31,9 +31,9 @@ const StatusText = styled.div`
   color: #9c9c9c;
 `;
 
-const Header: React.FC<Partial<MessageType>> = ({ username, timestamp }) => (
+const Header: React.FC<Partial<MessageType>> = ({ sender, timestamp }) => (
   <HeaderContainer>
-    <User>{username}</User>
+    {sender && <User>{sender.username}</User>}
     <Time>{timestampToString(timestamp)}</Time>
   </HeaderContainer>
 );
@@ -60,11 +60,11 @@ const Message: React.FC<MessageProps> = ({
   className,
   onContextMenu,
 }) => {
-  const { username, timestamp, text } = message;
+  const { sender, timestamp, text } = message;
 
   return (
     <div className={className} onContextMenu={onContextMenu}>
-      <Header username={username} timestamp={timestamp} />
+      <Header sender={sender} timestamp={timestamp} />
       <Body
         text={text}
         isEdited={message.isEdited}

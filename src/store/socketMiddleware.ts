@@ -10,7 +10,13 @@ const KEY_LOGGED_USER = 'LOGGED_USER';
 
 const socketMiddleware: Middleware = (store) => {
   const loggedUserRaw = localStorage.getItem(KEY_LOGGED_USER);
-  const loggedUser = loggedUserRaw ? JSON.parse(loggedUserRaw) : null;
+  let loggedUser = null;
+  try {
+    loggedUser = loggedUserRaw ? JSON.parse(loggedUserRaw) : null;
+  } catch (e) {
+    localStorage.removeItem(KEY_LOGGED_USER);
+  }
+
   let url = `${wsUrl}:${wsPort}`;
 
   if (loggedUser) {
@@ -29,12 +35,12 @@ const socketMiddleware: Middleware = (store) => {
 
       store.dispatch({
         type: 'WS_LOGGIN',
-        payload: messageData.loggedUser,
+        payload: messageData.data.loggedUser,
       });
 
       localStorage.setItem(
         KEY_LOGGED_USER,
-        JSON.stringify(messageData.loggedUser)
+        JSON.stringify(messageData.data.loggedUser)
       );
     }
 

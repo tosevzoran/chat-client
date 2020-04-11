@@ -26,7 +26,7 @@ test('Message List', () => {
   });
 
   messages.forEach((message) => {
-    const username = result.getByText(message.username);
+    const username = result.getByText(message.sender.username);
     const text = result.getByText(message.text);
     const timestamp = result.getByText(timestampToString(message.timestamp));
 

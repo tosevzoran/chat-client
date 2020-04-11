@@ -6,7 +6,7 @@ export const messages = [
     username: 'Lorem Ipsum',
     timestamp: 23479547398,
     isEdited: false,
-    user: {
+    sender: {
       id: '1',
       username: 'Lorem Ipsum',
     },
@@ -18,7 +18,7 @@ export const messages = [
     username: 'Richard McClintock',
     timestamp: 57498734587,
     isEdited: false,
-    user: {
+    sender: {
       id: '2',
       username: 'Richard McClintock',
     },
@@ -30,7 +30,7 @@ export const messages = [
     username: 'Finibus Bonorum',
     timestamp: 57477373451,
     isEdited: true,
-    user: {
+    sender: {
       id: '3',
       username: 'Finibus Bonorum',
     },

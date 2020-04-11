@@ -16,8 +16,8 @@ test('Participants List', () => {
     payload: normalize(messages, [messageEntity]),
   });
 
-  messages.forEach(({ username }) => {
-    const userEl = result.getByText(username);
+  messages.forEach(({ sender }) => {
+    const userEl = result.getByText(sender.username);
     expect(userEl).toBeInTheDocument();
   });
 });

@@ -4,11 +4,19 @@ import { AppState, Message } from './types';
 
 export const userEntity = new schema.Entity('users');
 export const messageEntity = new schema.Entity('messages', {
-  user: userEntity,
+  sender: userEntity,
+  data: {
+    // For joined/left notification
+    // the message sender is the Meeetingbot
+    // and the user info is passed as data
+    user: userEntity,
+  },
 });
 export const greetingEntity = new schema.Entity('greetings', {
-  connectedUsers: [userEntity],
-  messageHistory: [messageEntity],
+  data: {
+    connectedUsers: [userEntity],
+    messageHistory: [messageEntity],
+  },
 });
 
 const entityReducer = createReducer(

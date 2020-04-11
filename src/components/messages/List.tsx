@@ -13,11 +13,10 @@ const initialMessage: MessageType = {
   id: '',
   text: '',
   type: 'message',
-  username: '',
   timestamp: 0,
   isDeleted: false,
   isEdited: false,
-  user: { id: '', username: '', isDeleted: false },
+  sender: { id: '', username: '', isDeleted: false },
 };
 
 const Container = styled.div`
@@ -74,8 +73,8 @@ const List: React.FC = () => {
   const dispatch = useDispatch();
   const messages = useSelector(messagesSelector);
   const loggedUser = useSelector(loggedUserSelector);
-  const isMyMessage =
-    !message.isDeleted && loggedUser && message.user.id === loggedUser.id;
+  const isMyMessage = ({ sender }: MessageType) =>
+    loggedUser && sender.id === loggedUser.id;
 
   useLayoutEffect(() => {
     if (
@@ -129,7 +128,7 @@ const List: React.FC = () => {
         {messages.map((message: MessageType) => (
           <MessageRow key={message.id}>
             <Message message={message} />
-            {isMyMessage && (
+            {!message.isDeleted && isMyMessage(message) && (
               <Actions>
                 <ActionButton
                   type="button"
