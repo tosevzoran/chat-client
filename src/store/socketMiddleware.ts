@@ -6,8 +6,18 @@ import { messageEntity, greetingEntity } from './entitiesReducer';
 const wsUrl = process.env.REACT_APP_CHAT_URL;
 const wsPort = process.env.REACT_APP_CHAT_PORT;
 
+const KEY_LOGGED_USER = 'LOGGED_USER';
+
 const socketMiddleware: Middleware = (store) => {
-  const socket = new WebSocket(`${wsUrl}:${wsPort}`);
+  const loggedUserRaw = localStorage.getItem(KEY_LOGGED_USER);
+  const loggedUser = loggedUserRaw ? JSON.parse(loggedUserRaw) : null;
+  let url = `${wsUrl}:${wsPort}`;
+
+  if (loggedUser) {
+    url += `?userId=${loggedUser.id}`;
+  }
+
+  const socket = new WebSocket(url);
 
   socket.onmessage = (message) => {
     const messageData = JSON.parse(message.data);
@@ -21,6 +31,11 @@ const socketMiddleware: Middleware = (store) => {
         type: 'WS_LOGGIN',
         payload: messageData.loggedUser,
       });
+
+      localStorage.setItem(
+        KEY_LOGGED_USER,
+        JSON.stringify(messageData.loggedUser)
+      );
     }
 
     store.dispatch({
