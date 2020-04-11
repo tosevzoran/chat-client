@@ -25,7 +25,7 @@ const HeaderContainer = styled.div`
   display: flex;
 `;
 
-const Edited = styled.div`
+const StatusText = styled.div`
   margin-top: 0.125rem;
   font-size: 0.75rem;
   color: #9c9c9c;
@@ -38,12 +38,22 @@ const Header: React.FC<Partial<MessageType>> = ({ username, timestamp }) => (
   </HeaderContainer>
 );
 
-const Body: React.FC<Partial<MessageType>> = ({ text, isEdited }) => (
-  <div>
-    {text}
-    {isEdited && <Edited>(Edited)</Edited>}
-  </div>
-);
+const Body: React.FC<Partial<MessageType>> = ({
+  text,
+  isEdited,
+  isDeleted,
+}) => {
+  if (isDeleted) {
+    return <StatusText>(Deleted)</StatusText>;
+  }
+
+  return (
+    <div>
+      {text}
+      {isEdited && <StatusText>(Edited)</StatusText>}
+    </div>
+  );
+};
 
 const Message: React.FC<MessageProps> = ({
   message,
@@ -55,7 +65,11 @@ const Message: React.FC<MessageProps> = ({
   return (
     <div className={className} onContextMenu={onContextMenu}>
       <Header username={username} timestamp={timestamp} />
-      <Body text={text} isEdited={message.isEdited} />
+      <Body
+        text={text}
+        isEdited={message.isEdited}
+        isDeleted={message.isDeleted}
+      />
     </div>
   );
 };

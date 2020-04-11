@@ -1,6 +1,6 @@
 import React, { KeyboardEvent, useState, useRef, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaPen } from 'react-icons/fa';
+import { FaPen, FaTrash } from 'react-icons/fa';
 import { messagesSelector } from 'store/entitiesReducer';
 import { loggedUserSelector } from 'store/usersReducer';
 import Message from './Message';
@@ -105,8 +105,15 @@ const List: React.FC = () => {
     setMessage({ ...message, text: e.target.value });
   };
 
-  const handleEditMessage = (message: any) => {
+  const handleEditMessage = (message: MessageType) => {
     setMessage({ ...message, type: 'edit' });
+  };
+
+  const handleDeleteMessage = (message: MessageType) => {
+    dispatch({
+      type: 'WS_MESSAGE_SEND',
+      payload: { ...message, type: 'delete' },
+    });
   };
 
   return (
@@ -116,13 +123,19 @@ const List: React.FC = () => {
         {messages.map((message: MessageType) => (
           <MessageRow key={message.id}>
             <Message message={message} />
-            {message.user.id === loggedUser.id && (
+            {!message.isDeleted && message.user.id === loggedUser.id && (
               <Actions>
                 <ActionButton
                   type="button"
                   onClick={() => handleEditMessage(message)}
                 >
                   <FaPen />
+                </ActionButton>
+                <ActionButton
+                  type="button"
+                  onClick={() => handleDeleteMessage(message)}
+                >
+                  <FaTrash />
                 </ActionButton>
               </Actions>
             )}
