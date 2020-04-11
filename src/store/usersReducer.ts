@@ -1,5 +1,9 @@
-import { createSlice, SliceCaseReducers } from '@reduxjs/toolkit';
-import { User } from './types';
+import {
+  createSlice,
+  SliceCaseReducers,
+  createSelector,
+} from '@reduxjs/toolkit';
+import { AppState, User } from './types';
 
 type UserState = {
   loggedUser: User | null;
@@ -26,6 +30,11 @@ const messagesSlice = createSlice<UserState, SliceCaseReducers<UserState>>({
     }),
   },
 });
+
+export const loggedUserSelector = createSelector(
+  (state: AppState) => state.users.loggedUser,
+  (loggedUser) => loggedUser
+);
 
 const { actions, reducer } = messagesSlice;
 

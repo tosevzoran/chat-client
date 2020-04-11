@@ -4,12 +4,15 @@ export type Message = {
   type: string;
   username: string;
   timestamp: number;
+  user: User;
+  isEdited: boolean;
+  isDeleted: boolean;
 };
 
 export type User = {
   id: string;
   username: string;
-  isDeleted: string;
+  isDeleted: boolean;
 };
 
 export type AppState = {

@@ -25,6 +25,12 @@ const HeaderContainer = styled.div`
   display: flex;
 `;
 
+const Edited = styled.div`
+  margin-top: 0.125rem;
+  font-size: 0.75rem;
+  color: #9c9c9c;
+`;
+
 const Header: React.FC<Partial<MessageType>> = ({ username, timestamp }) => (
   <HeaderContainer>
     <User>{username}</User>
@@ -32,7 +38,12 @@ const Header: React.FC<Partial<MessageType>> = ({ username, timestamp }) => (
   </HeaderContainer>
 );
 
-const Body: React.FC<Partial<MessageType>> = ({ text }) => <div>{text}</div>;
+const Body: React.FC<Partial<MessageType>> = ({ text, isEdited }) => (
+  <div>
+    {text}
+    {isEdited && <Edited>(Edited)</Edited>}
+  </div>
+);
 
 const Message: React.FC<MessageProps> = ({
   message,
@@ -44,7 +55,7 @@ const Message: React.FC<MessageProps> = ({
   return (
     <div className={className} onContextMenu={onContextMenu}>
       <Header username={username} timestamp={timestamp} />
-      <Body text={text} />
+      <Body text={text} isEdited={message.isEdited} />
     </div>
   );
 };

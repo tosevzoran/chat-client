@@ -1,11 +1,24 @@
 import React, { KeyboardEvent, useState, useRef, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaPen } from 'react-icons/fa';
 import { messagesSelector } from 'store/entitiesReducer';
+import { loggedUserSelector } from 'store/usersReducer';
 import Message from './Message';
 import { Message as MessageType } from 'store/types';
 import styled from 'styled-components';
 
 const KEY_ENTER = 13;
+
+const initialMessage: MessageType = {
+  id: '',
+  text: '',
+  type: 'message',
+  username: '',
+  timestamp: 0,
+  isDeleted: false,
+  isEdited: false,
+  user: { id: '', username: '', isDeleted: false },
+};
 
 const Container = styled.div`
   display: flex;
@@ -21,7 +34,9 @@ const Messages = styled.div`
   flex: 1;
 `;
 
-const StyledMessage = styled(Message)`
+const MessageRow = styled.div`
+  display: flex;
+  justify-content: space-between;
   & + & {
     margin-top: 1.5rem;
   }
@@ -38,11 +53,27 @@ const MessageInput = styled.textarea`
   width: 100%;
 `;
 
+const Actions = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ActionButton = styled.button`
+  border: none;
+  margin: 0;
+  padding: 0.5rem;
+  width: auto;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+`;
+
 const List: React.FC = () => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState<MessageType>(initialMessage);
   const anchorRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const messages = useSelector(messagesSelector);
+  const loggedUser = useSelector(loggedUserSelector);
 
   useLayoutEffect(() => {
     if (anchorRef && anchorRef.current) {
@@ -51,27 +82,31 @@ const List: React.FC = () => {
   }, [messages]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
+    if (!message.text.trim()) {
+      return;
+    }
+
     if (e.keyCode === KEY_ENTER && !e.shiftKey) {
       e.preventDefault();
       e.stopPropagation();
 
       dispatch({
         type: 'WS_MESSAGE_SEND',
-        payload: {
-          text: message,
-          action: 'new',
-          type: 'message',
-        },
+        payload: message,
       });
 
-      setMessage('');
+      setMessage(initialMessage);
 
       return false;
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
+    setMessage({ ...message, text: e.target.value });
+  };
+
+  const handleEditMessage = (message: any) => {
+    setMessage({ ...message, type: 'edit' });
   };
 
   return (
@@ -79,12 +114,24 @@ const List: React.FC = () => {
       <Messages>
         {!messages.length && <p>This thread has no messages</p>}
         {messages.map((message: MessageType) => (
-          <StyledMessage key={message.id} message={message} />
+          <MessageRow key={message.id}>
+            <Message message={message} />
+            {message.user.id === loggedUser.id && (
+              <Actions>
+                <ActionButton
+                  type="button"
+                  onClick={() => handleEditMessage(message)}
+                >
+                  <FaPen />
+                </ActionButton>
+              </Actions>
+            )}
+          </MessageRow>
         ))}
         <div ref={anchorRef}></div>
       </Messages>
       <MessageInput
-        value={message}
+        value={message.text}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
       />
