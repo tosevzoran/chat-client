@@ -5,6 +5,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import storeConfig from 'store';
 import './index.css';
 import App from './App';
+import { ModalProvider } from 'components/modal';
 import * as serviceWorker from './serviceWorker';
 
 const store = configureStore(storeConfig);
@@ -12,7 +13,9 @@ const store = configureStore(storeConfig);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ModalProvider>
+        <App />
+      </ModalProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
