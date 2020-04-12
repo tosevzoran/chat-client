@@ -4,6 +4,7 @@ import { loggedUserSelector } from 'store/usersReducer';
 import styled from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
 import BaseButton from 'components/button/Base';
+import Input from 'components/input';
 import ModalWrapper, { useModal } from 'components/modal';
 
 const UserForm = styled.form`
@@ -31,7 +32,7 @@ const ConfirmButton = styled(BaseButton)`
   background-color: #56d492;
   color: #011627;
   font-size: 0.75rem;
-  padding: 0.25rem 2rem;
+  padding: 0.5rem 2rem;
   &:hover {
     background-color: #66d89c;
   }
@@ -57,7 +58,7 @@ const Modal: React.FC<{ modalId: string }> = ({ modalId }) => {
         <CloseButton onClick={hideModal}>
           <FaTimes />
         </CloseButton>
-        <input type="text" value={username} onChange={handleNameChange} />
+        <Input value={username} onChange={handleNameChange} />
         <ConfirmButton type="submit">Save</ConfirmButton>
       </UserForm>
     </ModalWrapper>
