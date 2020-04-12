@@ -52,6 +52,7 @@ const ModalContainer = styled.div`
 
 const ModalContent = styled.div`
   z-index: 1020;
+  flex: 1;
 `;
 
 const ModalProvider: React.FC = ({ children }) => {
