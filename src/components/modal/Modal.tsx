@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useLayoutEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
@@ -77,6 +77,22 @@ const ModalProvider: React.FC = ({ children }) => {
 
 const Modal: React.FC<{ modalId: string }> = ({ children, modalId }) => {
   const container = document.getElementById('modal-root');
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const { hideModal } = useModal(modalId);
+
+  useLayoutEffect(() => {
+    if (!overlayRef || !overlayRef.current) {
+      return;
+    }
+
+    const overlay = overlayRef.current;
+
+    overlay.addEventListener('click', hideModal);
+
+    return () => {
+      overlay.removeEventListener('click', hideModal);
+    };
+  });
 
   if (!container) {
     return null;
@@ -84,14 +100,16 @@ const Modal: React.FC<{ modalId: string }> = ({ children, modalId }) => {
 
   return createPortal(
     <Consumer>
-      {({ modals }) =>
-        modals[modalId] && (
-          <ModalContainer>
-            <ModalContent>{children}</ModalContent>
-            <ModalOverlay />
-          </ModalContainer>
-        )
-      }
+      {({ modals }) => {
+        return (
+          modals[modalId] && (
+            <ModalContainer>
+              <ModalContent>{children}</ModalContent>
+              <ModalOverlay ref={overlayRef} />
+            </ModalContainer>
+          )
+        );
+      }}
     </Consumer>,
     container
   );
