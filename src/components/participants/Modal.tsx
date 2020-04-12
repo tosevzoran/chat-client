@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { loggedUserSelector } from 'store/usersReducer';
 import styled from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
@@ -43,12 +43,21 @@ const Modal: React.FC<{ modalId: string }> = ({ modalId }) => {
   const loggedUser = useSelector(loggedUserSelector);
   const [username, setUsername] = useState(loggedUser && loggedUser.username);
 
+  const dispatch = useDispatch();
+
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    dispatch({
+      type: 'WS_MESSAGE_SEND',
+      payload: {
+        type: 'username-update',
+        text: username,
+      },
+    });
     hideModal();
   };
 

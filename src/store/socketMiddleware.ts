@@ -44,6 +44,13 @@ const socketMiddleware: Middleware = (store) => {
       );
     }
 
+    if (messageData.type === 'username-update') {
+      store.dispatch({
+        type: 'WS_USER_NAME_UPDATE',
+        payload: messageData.data.user,
+      });
+    }
+
     store.dispatch({
       type: 'WS_MESSAGE_RECEIVE',
       payload: normalize(messageData, normalizationEntity),

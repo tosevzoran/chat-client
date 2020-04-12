@@ -28,6 +28,16 @@ const messagesSlice = createSlice<UserState, SliceCaseReducers<UserState>>({
       ...state,
       loggedUser: payload,
     }),
+    WS_USER_NAME_UPDATE: (state, { payload }: LoginPayload) => {
+      if (state.loggedUser && state.loggedUser.id !== payload.id) {
+        return state;
+      }
+
+      return {
+        ...state,
+        loggedUser: payload,
+      };
+    },
   },
 });
 

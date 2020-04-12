@@ -25,6 +25,13 @@ const entityReducer = createReducer(
     messages: {},
   },
   {
+    WS_USER_NAME_UPDATE: (state, action) => ({
+      ...state,
+      users: {
+        ...state.users,
+        [action.payload.id]: action.payload,
+      },
+    }),
     WS_MESSAGE_RECEIVE: (state, action) => ({
       ...state,
       users: {
