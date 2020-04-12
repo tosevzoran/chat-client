@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 import styled from 'styled-components';
+import BaseButton from 'components/button/Base';
 
 type TabIdType = number | string | undefined;
 type TabContextProps = {
@@ -25,22 +26,6 @@ const context = createContext<TabContextProps>({
 
 const { Provider, Consumer } = context;
 
-const Button = styled.button`
-  border: none;
-  margin: 0;
-  padding: 0;
-  width: auto;
-  overflow: visible;
-
-  background: transparent;
-
-  /* inherit font & color from ancestor */
-  color: inherit;
-  font: inherit;
-
-  line-height: normal;
-`;
-
 const TabHeaderWrapper = styled.span``;
 
 const TabHeader: React.FC<TabProps> = ({ tabId, children, className }) => (
@@ -54,13 +39,13 @@ const TabHeader: React.FC<TabProps> = ({ tabId, children, className }) => (
         }
 
         return (
-          <Button
+          <BaseButton
             type="button"
             className={classes}
             onClick={() => changeTab(tabId)}
           >
             {children}
-          </Button>
+          </BaseButton>
         );
       }}
     </Consumer>
