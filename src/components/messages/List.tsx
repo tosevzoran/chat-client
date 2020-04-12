@@ -51,6 +51,9 @@ const MessageInput = styled.textarea`
   max-height: 10rem;
   overflow-y: auto;
   width: 100%;
+  resize: none;
+  font-family: inherit;
+  font-size: 0.75rem;
 `;
 
 const Actions = styled.div`
@@ -152,6 +155,7 @@ const List: React.FC = () => {
         value={message.text}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        placeholder="Message"
       />
     </Container>
   );
