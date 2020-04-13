@@ -1,8 +1,11 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import TabPanel from 'components/tab/TabPanel';
 import MessageList from 'components/messages/List';
 import ParticipantsList from 'components/participants/List';
+import ErrorOverlay from 'components/error/ErrorOverlay';
 import styled from 'styled-components';
+import { connectionSelector } from 'store/connectionReducer';
 
 const Container = styled.div`
   max-width: 50rem;
@@ -52,6 +55,8 @@ const Title = styled.h1`
 `;
 
 function App() {
+  const isLive = useSelector(connectionSelector);
+
   return (
     <Container>
       <Title>Status Meeting Standup</Title>
@@ -69,6 +74,7 @@ function App() {
           </TabPanel.TabContent>
         </Content>
       </TabPanel>
+      {!isLive && <ErrorOverlay />}
     </Container>
   );
 }

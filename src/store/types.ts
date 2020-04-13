@@ -23,4 +23,7 @@ export type AppState = {
   users: {
     loggedUser: User;
   };
+  connection: {
+    isLive: boolean;
+  };
 };

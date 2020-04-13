@@ -25,6 +25,14 @@ const socketMiddleware: Middleware = (store) => {
 
   const socket = new WebSocket(url);
 
+  socket.onopen = () => {
+    store.dispatch({ type: 'WS_CONNECTED' });
+  };
+
+  socket.onclose = () => {
+    store.dispatch({ type: 'WS_DISCONNECTED' });
+  };
+
   socket.onmessage = (message) => {
     const messageData = JSON.parse(message.data);
 
