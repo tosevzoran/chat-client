@@ -28,15 +28,33 @@ const TabHeader = styled(TabPanel.TabHeader)<{ isActive?: boolean }>`
 
   &.active {
     background-color: #ffffff;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
   }
+
+  &.active:last-child {
+    border-top-right-radius: 0;
+  }
+
+  &.active:first-child {
+    border-top-left-radius: 0;
+  }
+
   &:hover {
     cursor: pointer;
   }
 `;
 
+const Title = styled.h1`
+  font-size: 1rem;
+  font-weight: normal;
+  margin: 1.5rem auto;
+`;
+
 function App() {
   return (
     <Container>
+      <Title>Status Meeting Standup</Title>
       <TabPanel defaultTabId="messages">
         <div>
           <TabHeader tabId="participants">Participants</TabHeader>

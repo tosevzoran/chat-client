@@ -1,5 +1,4 @@
 import React, { createContext, useState } from 'react';
-import styled from 'styled-components';
 import BaseButton from 'components/button/Base';
 
 type TabIdType = number | string | undefined;
@@ -26,30 +25,26 @@ const context = createContext<TabContextProps>({
 
 const { Provider, Consumer } = context;
 
-const TabHeaderWrapper = styled.span``;
-
 const TabHeader: React.FC<TabProps> = ({ tabId, children, className }) => (
-  <TabHeaderWrapper>
-    <Consumer>
-      {({ changeTab, activeTabId }) => {
-        let classes = className;
+  <Consumer>
+    {({ changeTab, activeTabId }) => {
+      let classes = className;
 
-        if (activeTabId === tabId) {
-          classes += ' active';
-        }
+      if (activeTabId === tabId) {
+        classes += ' active';
+      }
 
-        return (
-          <BaseButton
-            type="button"
-            className={classes}
-            onClick={() => changeTab(tabId)}
-          >
-            {children}
-          </BaseButton>
-        );
-      }}
-    </Consumer>
-  </TabHeaderWrapper>
+      return (
+        <BaseButton
+          type="button"
+          className={classes}
+          onClick={() => changeTab(tabId)}
+        >
+          {children}
+        </BaseButton>
+      );
+    }}
+  </Consumer>
 );
 
 const TabContent: React.FC<TabProps> = ({ tabId, children }) => (
